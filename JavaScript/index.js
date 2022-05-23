@@ -76,7 +76,11 @@ function editTodoItem (evt) {
     for (let i = 0; i < toDoItem.length; i++) {
         if (toDoItem[i].id == evt.target.dataset.id){
             let editedValue = prompt('Edit the todo!', toDoItem[i].title);
-            toDoItem[i].title = editedValue;
+            if (editedValue == null){
+                alert(`Iltimos todoga nom bering!`);
+            } else {
+                toDoItem[i].title = editedValue;
+            }
             window.localStorage.clear;
             window.localStorage.setItem('todoslist', JSON.stringify(toDoItem));
         }
