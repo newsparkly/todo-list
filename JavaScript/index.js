@@ -1,56 +1,93 @@
-var input = fEl('.text-input');
-var list = fEl('.todo-list');
+let container = fEl('.container');
+let input = fEl('.text-input');
+let list = fEl('.todo-list');
 
 input.addEventListener('keyup', handleAddTodo);
 
-var localBase = JSON.parse(window.localStorage.getItem('todoslist'));
-var toDoItem = localBase ? localBase : [];
+let localBase = window.localStorage.getItem('todoslist');
+let toDoItem = localBase ? JSON.parse(localBase) : [];
+
+
+let deleteToDo = (evt) => {
+    let filteredList = [];
+    for (let i = 0; i < toDoItem.length; i++) {
+        if (toDoItem[i].id !== evt.target.dataset.id){
+            filteredList.push(toDoItem[i])
+        }
+    }
+    localStorage.setItem('todoslist', JSON.stringify(filteredList));
+    toDoItem = filteredList;
+    render(filteredList);
+}
+
+
 
 function creatingToDoItems(value) {
-    var elLi = addTag('li');
+    let elLi = addTag('li');
     elLi.className = 'd-flex align-items-center my-1 rounded shadow-sm py-2 px-3 border list-item';
-    var elInput = addTag('input');
-    elInput.className = "form-check-input m-0 ms-0";
+    let elInput = addTag('input');
+    elInput.className = "form-check-input m-0 ms-0 checkbox";
     elInput.type = 'checkbox';
-    var elP = addTag('p');
+    let elP = addTag('p');
     elP.className = "container__item-text ms-1 m-0 me-auto";
     elP.textContent = value.title;
-    var editBtn = addTag('button');
-    editBtn.className = 'btn btn-success ms-auto';
+    let editBtn = addTag('button');
+    editBtn.className = 'btn btn-success ms-auto edit';
     editBtn.textContent = 'Edit';
-    var deleteBtn = addTag('button');
-    deleteBtn.className = 'btn btn-danger ms-1';
-    deleteBtn.textContent = 'Delete'
-    
+    editBtn.dataset.id = value.id;
+    let deleteBtn = addTag('button');
+    deleteBtn.className = 'btn btn-danger ms-1 delete';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.dataset.id = value.id;
+
     elLi.append(elInput);
     elLi.append(elP);
     elLi.append(editBtn);
     elLi.append(deleteBtn);
     list.appendChild(elLi);
 }
-
 function render (array) {
     list.innerHTML = null;
     for (let i = 0; i < array.length; i++) {
         creatingToDoItems(array[i])
     }
 }
-
 function handleAddTodo (evt) {
     if(evt.keyCode === 13) {
-        var addedItem = {
+        if(evt.target.value == '') {
+            return alert(`Siz ma'lumot kirgizmadingiz!?`);
+        } else {var addedItem = {
             id: uuid.v4(),
             title: evt.target.value,
-            isCompleted: false
+            isCompleted: false}
+            
         }
         toDoItem.unshift(addedItem);
-
+        
         window.localStorage.setItem('todoslist', JSON.stringify(toDoItem));
-
-        console.log(toDoItem);
-
+        
         render(toDoItem)
         input.value = null;
     }
 }
+
+let editerBtn = fEl('.edit');
+function editTodoItem (evt) {
+    for (let i = 0; i < toDoItem.length; i++) {
+        if (toDoItem[i].id == evt.target.dataset.id){
+            let editedValue = prompt('Edit the todo!', toDoItem[i].title);
+            toDoItem[i].title = editedValue;
+            window.localStorage.clear;
+            window.localStorage.setItem('todoslist', JSON.stringify(toDoItem));
+        }
+    }        
+}
+
+list.addEventListener('click', (evt) => {
+    if(evt.target.matches(`.delete`)) {
+        deleteToDo(evt)
+    } else if (evt.target.matches('.edit')) {
+        editTodoItem(evt)
+    }
+})
 render(toDoItem);
