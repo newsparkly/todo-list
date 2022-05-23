@@ -77,7 +77,7 @@ function editTodoItem (evt) {
         if (toDoItem[i].id == evt.target.dataset.id){
             let editedValue = prompt('Edit the todo!', toDoItem[i].title);
             if (!editedValue){
-                alert(`Iltimos todoga nom bering!`);
+                return alert(`Iltimos todoga nom bering!`);
             } else {
                 toDoItem[i].title = editedValue;
             }
