@@ -70,7 +70,6 @@ function handleAddTodo (evt) {
 
 let editerBtn = fEl('.edit');
 function editTodoItem (evt) {
-    let filteredList = [];
     for (let i = 0; i < toDoItem.length; i++) {
         if (toDoItem[i].id == evt.target.dataset.id){
             let editedValue = prompt('Edit the todo!', toDoItem[i].title);
@@ -78,7 +77,6 @@ function editTodoItem (evt) {
                 return alert(`You have not entered a name!`);
             } else {
                 toDoItem[i].title = editedValue;
-                filteredList.push(toDoItem[i]);
             }
             window.localStorage.clear;
             window.localStorage.setItem('todoslist', JSON.stringify(toDoItem));
