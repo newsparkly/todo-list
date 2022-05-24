@@ -84,7 +84,7 @@ function editTodoItem (evt) {
             window.localStorage.setItem('todoslist', JSON.stringify(toDoItem));
         }
     }        
-    render(filteredList)
+    render(toDoItem)
 }
 
 list.addEventListener('click', (evt) => {
