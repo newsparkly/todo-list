@@ -4,10 +4,6 @@ let list = fEl('.todo-list');
 
 input.addEventListener('keyup', handleAddTodo);
 
-let localBase = window.localStorage.getItem('todoslist');
-let toDoItem = localBase ? JSON.parse(localBase) : [];
-
-
 let deleteToDo = (evt) => {
     let filteredList = [];
     for (let i = 0; i < toDoItem.length; i++) {
@@ -55,7 +51,7 @@ function render (array) {
 function handleAddTodo (evt) {
     if(evt.keyCode === 13) {
         if(evt.target.value == '') {
-            return alert(`Siz ma'lumot kirgizmadingiz!?`);
+            return alert(`Please fill out the task!`);
         } else {var addedItem = {
             id: uuid.v4(),
             title: evt.target.value,
@@ -77,7 +73,7 @@ function editTodoItem (evt) {
         if (toDoItem[i].id == evt.target.dataset.id){
             let editedValue = prompt('Edit the todo!', toDoItem[i].title);
             if (!editedValue){
-                return alert(`Iltimos todoga nom bering!`);
+                return alert(`You have not entered a name!`);
             } else {
                 toDoItem[i].title = editedValue;
             }
@@ -94,4 +90,8 @@ list.addEventListener('click', (evt) => {
         editTodoItem(evt)
     }
 })
+
+let localBase = window.localStorage.getItem('todoslist');
+let toDoItem = localBase ? JSON.parse(localBase) : [];
+
 render(toDoItem);
