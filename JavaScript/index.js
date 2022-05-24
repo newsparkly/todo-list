@@ -11,12 +11,11 @@ let deleteToDo = (evt) => {
             filteredList.push(toDoItem[i])
         }
     }
+
     localStorage.setItem('todoslist', JSON.stringify(filteredList));
     toDoItem = filteredList;
     render(filteredList);
 }
-
-
 
 function creatingToDoItems(value) {
     let elLi = addTag('li');
@@ -35,19 +34,21 @@ function creatingToDoItems(value) {
     deleteBtn.className = 'btn btn-danger ms-1 delete';
     deleteBtn.textContent = 'Delete';
     deleteBtn.dataset.id = value.id;
-
+    
     elLi.append(elInput);
     elLi.append(elP);
     elLi.append(editBtn);
     elLi.append(deleteBtn);
     list.appendChild(elLi);
 }
+
 function render (array) {
     list.innerHTML = null;
     for (let i = 0; i < array.length; i++) {
         creatingToDoItems(array[i])
     }
 }
+
 function handleAddTodo (evt) {
     if(evt.keyCode === 13) {
         if(evt.target.value == '') {
@@ -56,8 +57,8 @@ function handleAddTodo (evt) {
             id: uuid.v4(),
             title: evt.target.value,
             isCompleted: false}
-            
         }
+        
         toDoItem.unshift(addedItem);
         
         window.localStorage.setItem('todoslist', JSON.stringify(toDoItem));
